@@ -1,122 +1,120 @@
-# EyeTrax
+# EyeTrax — 眼动追踪打地鼠 🐹
 
-[![PyPI version](https://img.shields.io/pypi/v/eyetrax.svg)](https://pypi.org/project/eyetrax/)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)
-[![GitHub stars](https://img.shields.io/github/stars/ck-zhang/EyeTrax.svg?style=social)](https://github.com/ck-zhang/EyeTrax)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Made with Python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)
 
-![Demo](https://github.com/user-attachments/assets/1b953a10-442f-4c4a-95e0-52a68f1488bc)
+基于 **EyeTrax** 眼动追踪库扩展开发的**打地鼠游戏**，使用你的眼球来控制锤子！
 
-EyeTrax is a Python library that provides **webcam-based eye tracking**.
-Extract facial features, train a model and predict gaze with an easy‑to‑use interface.
+## 🎮 功能
 
-## Features
+- **👁️ 眼动打地鼠** — 用视线瞄准、眨眼或停留来敲打地鼠
+- **⌨️ 眼动打字** — 用眼动控制虚拟键盘输入文字
+- **📹 实时注视估计** — 基于普通网络摄像头
+- **🎯 多种校准模式** — 9点、5点、李萨如曲线、自适应校准
+- **🔍 可选滤波** — Kalman / KDE 平滑
+- **📺 虚拟摄像头** — 支持 OBS 推流
 
-- Real‑time gaze estimation
-- Multiple calibration workflows
-- Optional filtering (Kalman / KDE)
-- Model persistence – save / load a trained `GazeEstimator`
-- Virtual-camera overlay that integrates with streaming software (e.g., OBS) via the bundled **`eyetrax-virtualcam`** CLI
-
-## Installation
-
-### From [PyPI](https://pypi.org/project/eyetrax/)
+## 📦 安装
 
 ```bash
-pip install eyetrax
+# 克隆仓库
+git clone https://github.com/myx1025377675-maker/EyeTrax.git
+cd EyeTrax
+
+# 安装依赖（推荐使用 uv）
+pip install uv
+uv sync
+
+# 或者用 pip
+pip install -e .
 ```
 
-### From source
+## 🚀 快速开始
 
+### 打地鼠游戏
 ```bash
-git clone https://github.com/ck-zhang/eyetrax && cd eyetrax
-
-# editable install — pick one
-python -m pip install -e .
-pip install uv && uv sync
+python -m eyetrax.app.whack_a_mole
 ```
-
-## Demo
-
-The **EyeTrax** package provides two command‑line entry points
-
-| Command | Purpose |
-|---------|---------|
-| `eyetrax-demo` | Run an on‑screen gaze overlay demo |
-| `eyetrax-virtualcam` | Stream the overlay to a virtual webcam |
-
-Options
-
-| Flag | Values | Default | Description |
-|------|--------|---------|-------------|
-| `--filter` | `kalman`, `kde`, `none` | `none` | Smoothing filter |
-| `--camera` | *int* | `0` | Physical webcam index |
-| `--calibration` | `9p`, `5p`, `lissajous` | `9p` | Calibration routine |
-| `--background` *(demo only)* | *path* | — | Background image |
-| `--confidence` *(KDE only)* | *0–1* | `0.5` | Contour probability |
-
-## Quick Examples
-
+或者直接运行：
 ```bash
-eyetrax-demo --filter kalman
+run_whack_a_mole.bat
 ```
 
-```bash
-eyetrax-virtualcam --filter kde --calibration 5p
+### 其他应用
+
+| 命令 | 用途 |
+|------|------|
+| `eyetrax-whack` | 眼动打地鼠 |
+| `eyetrax-gaze-typing` | 眼动键盘打字 |
+| `eyetrax-gaze-suite` | 眼动打字套件 |
+| `eyetrax-demo` | 注视点实时显示 |
+| `eyetrax-virtualcam` | 推流到虚拟摄像头 |
+
+启动选项：
+
+| 参数 | 可选值 | 默认值 | 说明 |
+|------|--------|--------|------|
+| `--filter` | `kalman`, `kde`, `none` | `none` | 平滑滤波器 |
+| `--camera` | *数字* | `0` | 摄像头索引 |
+| `--calibration` | `9p`, `5p`, `lissajous` | `9p` | 校准方式 |
+| `--confidence` *(KDE)* | *0–1* | `0.5` | 等高线概率 |
+
+## 📁 项目结构
+
+```
+EyeTrax/
+├── src/eyetrax/
+│   ├── app/
+│   │   ├── whack_a_mole.py      # 🎯 打地鼠游戏
+│   │   ├── gaze_typing.py       # 眼动打字
+│   │   ├── gaze_typing_suite.py # 打字套件
+│   │   ├── demo.py              # 注视演示
+│   │   ├── virtualcam.py        # 虚拟摄像头
+│   │   ├── mouse_control.py     # 眼动鼠标
+│   │   └── build_model.py       # 模型训练
+│   ├── calibration/             # 校准算法
+│   ├── filters/                 # Kalman/KDE 滤波
+│   ├── models/                  # 注视预测模型
+│   └── utils/                   # 工具函数
+├── assets/
+│   ├── images/                  # 鼹鼠图片
+│   └── audio/                   # 背景音乐
+└── WHACK_A_MOLE_DEVNOTE.md      # 打地鼠开发文档
 ```
 
-### Virtual camera demo
-
-https://github.com/user-attachments/assets/de4a0b63-8631-4c16-9901-9f83bc0bb766
-
-## Library Usage
+## 🐍 库用法示例
 
 ```python
 from eyetrax import GazeEstimator, run_9_point_calibration
 import cv2
 
-# Create estimator and calibrate
+# 创建估计器并校准
 estimator = GazeEstimator()
 run_9_point_calibration(estimator)
 
-# Save model
+# 保存模型
 estimator.save_model("gaze_model.pkl")
-
-# Load model
-estimator = GazeEstimator()
-estimator.load_model("gaze_model.pkl")
 
 cap = cv2.VideoCapture(0)
 
 while True:
-    # Extract features from frame
     ret, frame = cap.read()
     features, blink = estimator.extract_features(frame)
 
-    # Predict screen coordinates
     if features is not None and not blink:
         x, y = estimator.predict([features])[0]
-        print(f"Gaze: ({x:.0f}, {y:.0f})")
+        print(f"注视坐标: ({x:.0f}, {y:.0f})")
 ```
 
-## More
+## 🙏 致谢
 
-If you find EyeTrax useful, consider starring the repo or contributing. If you use it in your research, please cite it. The project is available under the MIT license.
+本项目基于 [**EyeTrax**](https://github.com/ck-zhang/EyeTrax) 开发，感谢原作者 **Chenkai Zhang** 提供的优秀眼动追踪框架。
 
-**BibTeX**
-```
-@software{Zhang2025_EyeTrax,
-  author       = {Chenkai Zhang},
-  title        = {EyeTrax},
-  version      = {0.2.2},
-  date         = {2025-04-23},
-  url          = {https://pypi.org/project/eyetrax/},
-  repository   = {https://github.com/ck-zhang/EyeTrax},
-  keywords     = {eye tracking, computer vision}
-}
-```
+## 📄 许可证
 
-**APA style**
-```
-Zhang, C. (2025). EyeTrax (0.2.2) [Computer software]. https://pypi.org/project/eyetrax/ 
-```
+本项目基于 MIT 协议开源，详见 [LICENSE](LICENSE)。原始 EyeTrax 版权归 Chenkai Zhang 所有。
+
+---
+
+**作者**: 马跃翔  
+**仓库**: https://github.com/myx1025377675-maker/EyeTrax
